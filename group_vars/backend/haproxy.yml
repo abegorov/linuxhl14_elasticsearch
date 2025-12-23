@@ -3,7 +3,7 @@ haproxy_patroni_servers: '{{ groups["backend"] }}'
 haproxy_redis_servers: '{{ groups["backend"] }}'
 
 haproxy_stats_password: '{{ lookup("ansible.builtin.password",
-  "secrets/haproxy_stats_password.txt", length=26, encrypt="bcrypt") }}'
+  "secrets/haproxy_stats_password.txt", length=26, encrypt="sha512_crypt") }}'
 
 haproxy_certs:
   - ca_path: /etc/haproxy/patronica.crt
