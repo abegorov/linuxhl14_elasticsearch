@@ -1,0 +1,79 @@
+---
+- name: Update jvm settings
+  ansible.builtin.template:
+    src: jvm.options.j2
+    dest: '{{ elasticsearch_jvm_options_file }}'
+    owner: root
+    group: elasticsearch
+    mode: '0660'
+  notify: []
+
+- name: Check elasticsearch database exists
+  ansible.builtin.stat:
+    path: /var/lib/elasticsearch/indices
+  check_mode: false
+  register: _elasticsearch_indices
+
+- name: Update elasticsearch settings
+  vars:
+    elasticsearch_filter_config: '{{ _elasticsearch_indices.stat.exists }}'
+  ansible.builtin.template:
+    src: elasticsearch.yml.j2
+    dest: /etc/elasticsearch/elasticsearch.yml
+    owner: root
+    group: elasticsearch
+    mode: '0660'
+  notify: []
+
+- name: Update elasticsearch role mapping
+  ansible.builtin.template:
+    src: role_mapping.yml.j2
+    dest: /etc/elasticsearch/role_mapping.yml
+    owner: root
+    group: elasticsearch
+    mode: '0660'
+  notify: []
+
+- name: Update elasticsearch roles
+  ansible.builtin.template:
+    src: roles.yml.j2
+    dest: /etc/elasticsearch/roles.yml
+    owner: root
+    group: elasticsearch
+    mode: '0660'
+  notify: []
+
+- name: Update elasticsearch users
+  ansible.builtin.template:
+    src: users.j2
+    dest: /etc/elasticsearch/users
+    owner: root
+    group: elasticsearch
+    mode: '0660'
+  notify: []
+
+- name: Update elasticsearch users roles
+  ansible.builtin.template:
+    src: users_roles.j2
+    dest: /etc/elasticsearch/users_roles
+    owner: root
+    group: elasticsearch
+    mode: '0660'
+  notify: []
+
+- name: Enable and start elasticsearch service
+  ansible.builtin.systemd_service:
+    name: elasticsearch.service
+    enabled: true
+    state: started
+  ignore_errors: '{{ ansible_check_mode }}'
+
+- name: Update elasticsearch settings
+  ansible.builtin.template:
+    src: elasticsearch.yml.j2
+    dest: /etc/elasticsearch/elasticsearch.yml
+    owner: root
+    group: elasticsearch
+    mode: '0660'
+  notify: []
+...

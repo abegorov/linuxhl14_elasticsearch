@@ -1,0 +1,60 @@
+---
+- name: Common provision
+  tags: common
+  hosts: all
+  become: true
+  gather_facts: false
+  roles:
+    - tls_ca
+    - tls_certs
+    - wait_connection
+    - apt_sources
+    - bash_completion
+    - chrony
+    - hosts
+    - locale_gen
+    - system_groups
+    - system_users
+
+- name: Web provision
+  tags: angie
+  hosts: backend
+  become: true
+  gather_facts: false
+  roles:
+    - angie
+
+- name: Backend provision
+  tags: backend
+  hosts: backend
+  become: true
+  gather_facts: false
+  roles:
+    - etcd
+    - patroni
+    - haproxy
+    - pgbouncer
+    - redis
+    - redis_sentinel
+    - patroni_user
+    - patroni_db
+    - patroni_privs
+    - netbox
+
+- name: Shared IP provision
+  tags: keepalived
+  hosts: backend
+  become: true
+  gather_facts: false
+  roles:
+    - role: keepalived
+      when: not yandex_cloud | default(False)
+
+- name: Elastic search provision
+  tags: es
+  hosts: elasticsearch
+  become: true
+  gather_facts: false
+  roles:
+    - elasticsearch
+...

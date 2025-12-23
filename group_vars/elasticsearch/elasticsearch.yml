@@ -1,0 +1,16 @@
+---
+elasticsearch_jvm_options: |
+  -Xms1g
+  -Xmx1g
+
+elasticsearch_config_override:
+  network.host: '{{ ip_address }}'
+  http.host: '{{ ip_address }}'
+  transport.host: '{{ ip_address }}'
+  cluster.name: abegorov-elasticsearch-cluster
+  node.name: '{{ inventory_hostname }}'
+  discovery.seed_hosts: '{{ groups["elasticsearch"] |
+    map("ansible.builtin.extract", hostvars, "ip_address") }}'
+  cluster.initial_master_nodes: '{{ groups["elasticsearch"] |
+    map("ansible.builtin.extract", hostvars, "ip_address") }}'
+...
