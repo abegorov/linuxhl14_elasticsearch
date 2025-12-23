@@ -38,7 +38,7 @@
   changed_when: false
   loop: '{{ tls_certs_certs }}'
   no_log: '{{ not debug }}'
-  register: tls_certs_csrs
+  register: _tls_certs_csrs
 
 - name: Create certificates from CSRs
   become: false
@@ -58,6 +58,6 @@
     path: '{{ item.item.cert_path }}'
     privatekey_path: '{{ item.privatekey }}'
     provider: ownca
-  loop: '{{ tls_certs_csrs.results }}'
+  loop: '{{ _tls_certs_csrs.results }}'
   no_log: '{{ not debug }}'
 ...

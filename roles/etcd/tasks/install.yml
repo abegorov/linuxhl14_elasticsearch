@@ -4,7 +4,7 @@
     path: '{{ etcd_bin_path }}/etcd'
   changed_when: false
   check_mode: false
-  register: etcd_is_installed
+  register: _etcd_is_installed
 
 - name: Check current etcd version
   ansible.builtin.command:
@@ -12,7 +12,7 @@
   changed_when: false
   failed_when: false
   check_mode: false
-  register: etcd_current_version
+  register: _etcd_current_version
   when: etcd_is_installed.stat.exists
 
 - name: Download and unarchive etcd release binary
@@ -28,8 +28,8 @@
     owner: root
     group: root
     mode: '0755'
-  when: not etcd_is_installed.stat.exists
+  when: not _etcd_is_installed.stat.exists
     or etcd_version not in
-      etcd_current_version.stdout_lines | first
+      _etcd_current_version.stdout_lines | first
   notify: Restart service etcd
 ...

@@ -65,6 +65,6 @@
     name: angie.service
     enabled: '{{ angie_autostart }}'
     state: '{{ "started" if angie_autostart else omit }}'
-  register: angie_service
+  register: _angie_service
   ignore_errors: '{{ ansible_check_mode }}'
 ...

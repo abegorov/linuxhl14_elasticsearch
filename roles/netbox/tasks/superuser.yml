@@ -12,7 +12,7 @@
     ssl_mode: verify-full
     query: SELECT id FROM users_user WHERE username = %s
     positional_args: ['{{ netbox_superuser }}']
-  register: netbox_superuser_id
+  register: _netbox_superuser_id
   tags: [netbox, netbox_superuser]
 
 - name: Create superuser if not exists
@@ -24,7 +24,7 @@
     command: createsuperuser --noinput
     project_path: '{{ netbox_dir }}/netbox'
     virtualenv: '{{ netbox_dir }}/venv'
-  when: netbox_superuser_id.rowcount == 0
+  when: _netbox_superuser_id.rowcount == 0
   retries: 3
   tags: [netbox, netbox_superuser]
 ...

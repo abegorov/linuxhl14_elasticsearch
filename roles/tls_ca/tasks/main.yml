@@ -39,7 +39,7 @@
   changed_when: false
   loop: '{{ tls_ca_certs }}'
   no_log: '{{ not debug }}'
-  register: tls_ca_csrs
+  register: _tls_ca_csrs
 
 - name: Create self-signed CA certificates from CSRs
   become: false
@@ -56,6 +56,6 @@
       default(tls_ca_not_after) }}'
     selfsigned_not_before: '{{ item.item.not_before |
       default(tls_ca_not_before) }}'
-  loop: '{{ tls_ca_csrs.results }}'
+  loop: '{{ _tls_ca_csrs.results }}'
   no_log: '{{ not debug }}'
 ...
