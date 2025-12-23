@@ -10,13 +10,14 @@
 
 - name: Check elasticsearch database exists
   ansible.builtin.stat:
-    path: /var/lib/elasticsearch/indices
+    path: /var/lib/elasticsearch/snapshot_cache
   check_mode: false
-  register: _elasticsearch_indices
+  register: _elasticsearch_snapshot_cache
 
 - name: Update elasticsearch settings
   vars:
-    elasticsearch_filter_config: '{{ _elasticsearch_indices.stat.exists }}'
+    elasticsearch_filter_config: '{{
+      _elasticsearch_snapshot_cache.stat.exists }}'
   ansible.builtin.template:
     src: elasticsearch.yml.j2
     dest: /etc/elasticsearch/elasticsearch.yml
@@ -44,8 +45,8 @@
   notify: Restart elasticsearch service
 
 - name: Update elasticsearch users
-  ansible.builtin.template:
-    src: users.j2
+  ansible.builtin.copy:
+    content: '{{ elasticsearch_users }}'
     dest: /etc/elasticsearch/users
     owner: root
     group: elasticsearch
@@ -53,8 +54,8 @@
   notify: Restart elasticsearch service
 
 - name: Update elasticsearch users roles
-  ansible.builtin.template:
-    src: users_roles.j2
+  ansible.builtin.copy:
+    content: '{{ elasticsearch_users_roles }}'
     dest: /etc/elasticsearch/users_roles
     owner: root
     group: elasticsearch
