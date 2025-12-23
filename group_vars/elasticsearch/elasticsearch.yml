@@ -5,7 +5,9 @@ elasticsearch_jvm_options: |
 
 elasticsearch_config_override:
   network.host: '{{ ip_address }}'
-  http.host: '{{ ip_address }}'
+  http.host:
+    - _local_
+    - '{{ ip_address }}'
   transport.host: '{{ ip_address }}'
   cluster.name: abegorov-elasticsearch-cluster
   node.name: '{{ inventory_hostname }}'
