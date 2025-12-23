@@ -3,7 +3,7 @@
   community.postgresql.postgresql_query:
     login_db: '{{ netbox_db }}'
     login_host: '{{ netbox_db_host }}'
-    port: '{{ netbox_db_port }}'
+    login_port: '{{ netbox_db_port }}'
     login_user: '{{ netbox_db_user }}'
     login_password: '{{ netbox_db_password }}'
     ca_cert: '{{ netbox_pgsql_cert.ca_path }}'

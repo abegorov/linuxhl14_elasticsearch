@@ -22,6 +22,7 @@ angie_httpd_conf_backend:
         proxy_set_header X-Forwarded-Proto $scheme;
       }
     }
-angie_httpd_conf: '{{ angie_httpd_conf_default | ansible.builtin.combine(
-  angie_httpd_conf_status, angie_httpd_conf_backend )}}'
+angie_httpd_conf: '{{ angie_httpd_conf_default |
+  ansible.builtin.combine(angie_httpd_conf_status,
+  angie_httpd_conf_backend) }}'
 ...

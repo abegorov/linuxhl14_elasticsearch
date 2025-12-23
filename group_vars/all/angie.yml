@@ -44,6 +44,6 @@ angie_httpd_conf_status:
         vhost_traffic_status_display_format prometheus;
       }
     }
-angie_httpd_conf: '{{ angie_httpd_conf_default | ansible.builtin.combine(
-  angie_httpd_conf_status) }}'
+angie_httpd_conf: '{{ angie_httpd_conf_default |
+  ansible.builtin.combine(angie_httpd_conf_status) }}'
 ...
