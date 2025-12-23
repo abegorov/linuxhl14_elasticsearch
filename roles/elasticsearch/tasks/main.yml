@@ -24,4 +24,8 @@
 - name: Configure elasticsearch
   ansible.builtin.import_tasks: config.yml
   tags: [elasticsearch, elasticsearch_config]
+
+- name: Force all notified handlers to run
+  ansible.builtin.meta: flush_handlers
+  tags: [elasticsearch, elasticsearch_config]
 ...

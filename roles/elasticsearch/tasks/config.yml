@@ -6,7 +6,7 @@
     owner: root
     group: elasticsearch
     mode: '0660'
-  notify: []
+  notify: Restart elasticsearch service
 
 - name: Check elasticsearch database exists
   ansible.builtin.stat:
@@ -23,7 +23,7 @@
     owner: root
     group: elasticsearch
     mode: '0660'
-  notify: []
+  notify: Restart elasticsearch service
 
 - name: Update elasticsearch role mapping
   ansible.builtin.template:
@@ -32,7 +32,7 @@
     owner: root
     group: elasticsearch
     mode: '0660'
-  notify: []
+  notify: Restart elasticsearch service
 
 - name: Update elasticsearch roles
   ansible.builtin.template:
@@ -41,7 +41,7 @@
     owner: root
     group: elasticsearch
     mode: '0660'
-  notify: []
+  notify: Restart elasticsearch service
 
 - name: Update elasticsearch users
   ansible.builtin.template:
@@ -50,7 +50,7 @@
     owner: root
     group: elasticsearch
     mode: '0660'
-  notify: []
+  notify: Restart elasticsearch service
 
 - name: Update elasticsearch users roles
   ansible.builtin.template:
@@ -59,7 +59,7 @@
     owner: root
     group: elasticsearch
     mode: '0660'
-  notify: []
+  notify: Restart elasticsearch service
 
 - name: Enable and start elasticsearch service
   ansible.builtin.systemd_service:
@@ -75,5 +75,5 @@
     owner: root
     group: elasticsearch
     mode: '0660'
-  notify: []
+  notify: Restart elasticsearch service
 ...
