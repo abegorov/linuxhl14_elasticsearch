@@ -23,6 +23,4 @@ elasticsearch_elastic_password: '{{ lookup("ansible.builtin.password",
   "secrets/elasticsearch_elastic_password.txt", length=26) }}'
 elasticsearch_kibana_password: '{{ lookup("ansible.builtin.password",
   "secrets/elasticsearch_kibana_password.txt", length=26) }}'
-elasticsearch_logstash_password: '{{ lookup("ansible.builtin.password",
-  "secrets/elasticsearch_logstash_password.txt", length=26) }}'
 ...
