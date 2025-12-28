@@ -9,10 +9,13 @@ tls_copy_certs:
     key_content: '{{ lookup("ansible.builtin.file",
       "secrets/certs/{{ inventory_hostname }}.key") }}'
 
+tls_copy_dir_owner: '{{ omit }}'
+tls_copy_dir_group: '{{ omit }}'
 tls_copy_dir_mode: '0755'
 tls_copy_cert_owner: root
 tls_copy_cert_group: root
 tls_copy_cert_mode: '0644'
+tls_copy_key_format: pkcs1
 tls_copy_key_owner: root
 tls_copy_key_group: root
 tls_copy_key_mode: '0600'

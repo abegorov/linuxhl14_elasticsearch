@@ -11,6 +11,8 @@
     tls_copy_certs:
       - '{{ kibana_cert }}'
       - '{{ kibana_elasticsearch_cert }}'
+    tls_copy_dir_owner: root
+    tls_copy_dir_group: kibana
     tls_copy_dir_mode: '0750'
     tls_copy_cert_owner: root
     tls_copy_cert_group: kibana

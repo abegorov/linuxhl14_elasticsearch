@@ -8,6 +8,8 @@
     name: tls_copy
     public: false
   vars:
+    tls_copy_dir_owner: redis
+    tls_copy_dir_group: redis
     tls_copy_dir_mode: '02770'
     tls_copy_certs: ['{{ redis_cert }}']
     tls_copy_key_owner: redis

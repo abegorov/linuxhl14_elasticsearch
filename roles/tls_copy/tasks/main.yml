@@ -9,6 +9,8 @@
       map(attribute="key_path") }}'
   ansible.builtin.file:
     path: '{{ item }}'
+    owner: '{{ tls_copy_dir_owner }}'
+    group: '{{ tls_copy_dir_group }}'
     mode: '{{ tls_copy_dir_mode }}'
     state: directory
   loop: '{{ (ca_paths + cert_paths + key_paths) |
@@ -19,9 +21,9 @@
     content: |
       {{ item.ca_content }}
     dest: '{{ item.ca_path }}'
-    owner: '{{ tls_copy_cert_owner }}'
-    group: '{{ tls_copy_cert_group }}'
-    mode: '{{ tls_copy_cert_mode }}'
+    owner: '{{ item.owner | default(tls_copy_cert_owner) }}'
+    group: '{{ item.group | default(tls_copy_cert_group) }}'
+    mode: '{{ item.mode | default(tls_copy_cert_mode) }}'
   no_log: '{{ not debug }}'
   when: item.ca_path is defined
   loop: '{{ tls_copy_certs }}'
@@ -35,22 +37,22 @@
       {{ item.ca_content }}
       {% endif %}
     dest: '{{ item.cert_path }}'
-    owner: '{{ tls_copy_cert_owner }}'
-    group: '{{ tls_copy_cert_group }}'
-    mode: '{{ tls_copy_cert_mode }}'
+    owner: '{{ item.owner | default(tls_copy_cert_owner) }}'
+    group: '{{ item.group | default(tls_copy_cert_group) }}'
+    mode: '{{ item.mode | default(tls_copy_cert_mode) }}'
   no_log: '{{ not debug }}'
   when: item.cert_content is defined
   loop: '{{ tls_copy_certs }}'
   notify: '{{ tls_copy_notify }}'
 
 - name: Update keys
-  ansible.builtin.copy:
-    content: |
-      {{ item.key_content }}
-    dest: '{{ item.key_path }}'
-    owner: '{{ tls_copy_key_owner }}'
-    group: '{{ tls_copy_key_group }}'
-    mode: '{{ tls_copy_key_mode }}'
+  community.crypto.openssl_privatekey_convert:
+    src_content: '{{ item.key_content }}'
+    dest_path: '{{ item.key_path }}'
+    format: '{{ item.format | default(tls_copy_key_format) }}'
+    owner: '{{ item.owner | default(tls_copy_key_owner) }}'
+    group: '{{ item.group | default(tls_copy_key_group) }}'
+    mode: '{{ item.mode | default(tls_copy_key_mode) }}'
   no_log: '{{ not debug }}'
   when: item.key_content is defined
   loop: '{{ tls_copy_certs }}'
