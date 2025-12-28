@@ -4,6 +4,8 @@
     name: apt-transport-https
     update_cache: true
     state: present
+  retries: 10
+  delay: 10
 
 - name: Update elastic repo gpg key
   ansible.builtin.get_url:
