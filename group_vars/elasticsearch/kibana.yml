@@ -8,4 +8,10 @@ kibana_config_override:
     map("ansible.builtin.extract", hostvars, "elasticsearch_url") }}'
   elasticsearch.username: kibana_system
   elasticsearch.password: '{{ elasticsearch_kibana_password }}'
+
+kibana_node_options: |
+  --max-old-space-size=256
+  --unhandled-rejections=warn
+  --dns-result-order=ipv4first
+  --no-experimental-require-module
 ...

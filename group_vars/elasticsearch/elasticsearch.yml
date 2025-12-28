@@ -1,7 +1,7 @@
 ---
 elasticsearch_jvm_options: |
-  -Xms1g
-  -Xmx1g
+  -Xms512m
+  -Xmx512m
 
 elasticsearch_url: https://{{ ip_address }}:9200
 
