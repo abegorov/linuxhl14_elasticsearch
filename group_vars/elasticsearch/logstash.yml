@@ -1,0 +1,42 @@
+---
+logstash_jvm_options: |
+  -Xms256m
+  -Xmx256m
+  11-13:-XX:+UseConcMarkSweepGC
+  11-13:-XX:CMSInitiatingOccupancyFraction=75
+  11-13:-XX:+UseCMSInitiatingOccupancyOnly
+  -Djava.awt.headless=true
+  -Dfile.encoding=UTF-8
+  -Djruby.compile.invokedynamic=true
+  -XX:+HeapDumpOnOutOfMemoryError
+  -Djava.security.egd=file:/dev/urandom
+  -Dlog4j2.isThreadContextMapInheritable=true
+logstash_confd:
+  beats: |
+    input {
+      beats {
+        host => "{{ ip_address }}"
+        port => 5044
+        ssl_enabled => true
+        ssl_key => "{{ logstash_cert.key_path }}"
+        ssl_certificate => "{{ logstash_cert.cert_path }}"
+        ssl_certificate_authorities => []
+        ssl_client_authentication => "none"
+      }
+    }
+    output {
+      elasticsearch {
+        hosts => [
+    {% for host in groups["elasticsearch"] %}
+          "{{ hostvars[host].elasticsearch_url }}"{{
+          '' if loop.last else ',' }}
+    {% endfor %}
+        ]
+        index => "%{[@metadata][beat]}-%{[@metadata][version]}-%{+YYYY.MM.dd}"
+        user => "elastic"
+        password => "{{ elasticsearch_elastic_password }}"
+        ssl_certificate_authorities => "{{
+          logstash_elasticsearch_cert.ca_path }}"
+      }
+    }
+...

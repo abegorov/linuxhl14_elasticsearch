@@ -1,0 +1,8 @@
+---
+- name: Install logstash
+  ansible.builtin.apt:
+    name: logstash
+    update_cache: true
+    cache_valid_time: 3600
+    state: present
+...
