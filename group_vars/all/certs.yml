@@ -21,6 +21,11 @@ logstash_ca_cert_path: '{{ logstash_certs_dir }}/ca.crt'
 logstash_ca_key_path: '{{ logstash_certs_dir }}/ca.key'
 logstash_cert_path: '{{ logstash_certs_dir }}/{{ inventory_hostname }}.crt'
 logstash_key_path: '{{ logstash_certs_dir }}/{{ inventory_hostname }}.key'
+filebeat_certs_dir: secrets/certs/filebeat
+filebeat_ca_cert_path: '{{ filebeat_certs_dir }}/ca.crt'
+filebeat_ca_key_path: '{{ filebeat_certs_dir }}/ca.key'
+filebeat_cert_path: '{{ filebeat_certs_dir }}/{{ inventory_hostname }}.crt'
+filebeat_key_path: '{{ filebeat_certs_dir }}/{{ inventory_hostname }}.key'
 etcd_certs_dir: secrets/certs/etcd
 etcd_ca_cert_path: '{{ etcd_certs_dir }}/ca.crt'
 etcd_ca_key_path: '{{ etcd_certs_dir }}/ca.key'
@@ -69,6 +74,9 @@ tls_ca_certs:
   - common_name: LOCAL LOGSTASH ROOT CA
     cert_path: '{{ logstash_ca_cert_path }}'
     key_path: '{{ logstash_ca_key_path }}'
+  - common_name: LOCAL FILEBEAT ROOT CA
+    cert_path: '{{ filebeat_ca_cert_path }}'
+    key_path: '{{ filebeat_ca_key_path }}'
   - common_name: LOCAL ETCD ROOT CA
     cert_path: '{{ etcd_ca_cert_path }}'
     key_path: '{{ etcd_ca_key_path }}'
