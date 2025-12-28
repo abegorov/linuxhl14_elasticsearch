@@ -57,4 +57,5 @@
   gather_facts: false
   roles:
     - elasticsearch
+    - kibana
 ...
