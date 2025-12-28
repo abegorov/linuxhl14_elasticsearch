@@ -22,10 +22,10 @@
     owner: '{{ tls_copy_cert_owner }}'
     group: '{{ tls_copy_cert_group }}'
     mode: '{{ tls_copy_cert_mode }}'
-  loop: '{{ tls_copy_certs }}'
   no_log: '{{ not debug }}'
-  notify: '{{ tls_copy_notify }}'
   when: item.ca_path is defined
+  loop: '{{ tls_copy_certs }}'
+  notify: '{{ tls_copy_notify }}'
 
 - name: Update certificates
   ansible.builtin.copy:
@@ -38,9 +38,10 @@
     owner: '{{ tls_copy_cert_owner }}'
     group: '{{ tls_copy_cert_group }}'
     mode: '{{ tls_copy_cert_mode }}'
+  no_log: '{{ not debug }}'
+  when: item.cert_content is defined
   loop: '{{ tls_copy_certs }}'
   notify: '{{ tls_copy_notify }}'
-  no_log: '{{ not debug }}'
 
 - name: Update keys
   ansible.builtin.copy:
@@ -50,7 +51,9 @@
     owner: '{{ tls_copy_key_owner }}'
     group: '{{ tls_copy_key_group }}'
     mode: '{{ tls_copy_key_mode }}'
+  no_log: '{{ not debug }}'
+  when: item.key_content is defined
   loop: '{{ tls_copy_certs }}'
   notify: '{{ tls_copy_notify }}'
-  no_log: '{{ not debug }}'
+
 ...
