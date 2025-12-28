@@ -18,7 +18,7 @@
     tls_copy_key_owner: root
     tls_copy_key_group: elasticsearch
     tls_copy_key_mode: '0660'
-    tls_copy_notify: []
+    tls_copy_notify: Restart elasticsearch service
   tags: [elasticsearch, elasticsearch_certs]
 
 - name: Configure elasticsearch
