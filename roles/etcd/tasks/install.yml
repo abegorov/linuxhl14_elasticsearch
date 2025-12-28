@@ -13,7 +13,7 @@
   failed_when: false
   check_mode: false
   register: _etcd_current_version
-  when: etcd_is_installed.stat.exists
+  when: _etcd_is_installed.stat.exists
 
 - name: Download and unarchive etcd release binary
   ansible.builtin.unarchive:
