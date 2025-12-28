@@ -9,6 +9,18 @@ elasticsearch_transport_ca_cert_path: '{{ elasticsearch_transport_certs_dir }}/c
 elasticsearch_transport_ca_key_path: '{{ elasticsearch_transport_certs_dir }}/ca.key'
 elasticsearch_transport_cert_path: '{{ elasticsearch_transport_certs_dir }}/{{ inventory_hostname }}.crt'
 elasticsearch_transport_key_path: '{{ elasticsearch_transport_certs_dir }}/{{ inventory_hostname }}.key'
+kibana_certs_dir: secrets/certs/kibana
+kibana_ca_cert_path: '{{ kibana_certs_dir }}/ca.crt'
+kibana_ca_key_path: '{{ kibana_certs_dir }}/ca.key'
+kibana_cert_path: '{{ kibana_certs_dir }}/{{ inventory_hostname }}.crt'
+kibana_key_path: '{{ kibana_certs_dir }}/{{ inventory_hostname }}.key'
+kibana_cert_not_after: '20260101000000Z'
+kibana_cert_not_before: '20250101000000Z'
+logstash_certs_dir: secrets/certs/logstash
+logstash_ca_cert_path: '{{ logstash_certs_dir }}/ca.crt'
+logstash_ca_key_path: '{{ logstash_certs_dir }}/ca.key'
+logstash_cert_path: '{{ logstash_certs_dir }}/{{ inventory_hostname }}.crt'
+logstash_key_path: '{{ logstash_certs_dir }}/{{ inventory_hostname }}.key'
 etcd_certs_dir: secrets/certs/etcd
 etcd_ca_cert_path: '{{ etcd_certs_dir }}/ca.crt'
 etcd_ca_key_path: '{{ etcd_certs_dir }}/ca.key'
@@ -51,6 +63,12 @@ tls_ca_certs:
   - common_name: LOCAL ELASTICSEARCH TRANSPORT ROOT CA
     cert_path: '{{ elasticsearch_transport_ca_cert_path }}'
     key_path: '{{ elasticsearch_transport_ca_key_path }}'
+  - common_name: LOCAL KIBANA ROOT CA
+    cert_path: '{{ kibana_ca_cert_path }}'
+    key_path: '{{ kibana_ca_key_path }}'
+  - common_name: LOCAL LOGSTASH ROOT CA
+    cert_path: '{{ logstash_ca_cert_path }}'
+    key_path: '{{ logstash_ca_key_path }}'
   - common_name: LOCAL ETCD ROOT CA
     cert_path: '{{ etcd_ca_cert_path }}'
     key_path: '{{ etcd_ca_key_path }}'
