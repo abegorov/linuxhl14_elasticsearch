@@ -16,8 +16,16 @@
     - system_groups
     - system_users
 
+- name: Elastic search provision
+  hosts: elasticsearch
+  become: true
+  gather_facts: false
+  roles:
+    - elasticsearch
+    - kibana
+    - logstash
+
 - name: Web provision
-  tags: angie
   hosts: backend
   become: true
   gather_facts: false
@@ -25,7 +33,6 @@
     - angie
 
 - name: Backend provision
-  tags: backend
   hosts: backend
   become: true
   gather_facts: false
@@ -42,21 +49,10 @@
     - netbox
 
 - name: Shared IP provision
-  tags: keepalived
   hosts: backend
   become: true
   gather_facts: false
   roles:
     - role: keepalived
       when: not yandex_cloud | default(False)
-
-- name: Elastic search provision
-  tags: es
-  hosts: elasticsearch
-  become: true
-  gather_facts: false
-  roles:
-    - elasticsearch
-    - kibana
-    - logstash
 ...

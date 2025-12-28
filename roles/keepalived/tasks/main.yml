@@ -7,6 +7,7 @@
     state: present
   retries: 10
   delay: 10
+  tags: keepalived
 
 - name: Update keepalived configuration
   ansible.builtin.copy:
@@ -15,6 +16,7 @@
     owner: root
     group: root
     mode: '0644'
+  tags: keepalived
   notify: Reload keepalived service
 
 - name: Enable and start keepalived service
@@ -22,4 +24,5 @@
     name: keepalived.service
     enabled: true
     state: started
+  tags: keepalived
 ...
