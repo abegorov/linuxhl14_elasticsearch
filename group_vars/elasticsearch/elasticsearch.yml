@@ -3,6 +3,8 @@ elasticsearch_jvm_options: |
   -Xms1g
   -Xmx1g
 
+elasticsearch_url: https://{{ ip_address }}:9200
+
 elasticsearch_config_override:
   network.host: '{{ ip_address }}'
   http.host:

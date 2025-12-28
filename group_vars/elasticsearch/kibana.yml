@@ -1,0 +1,11 @@
+---
+kibana_config_override:
+  server.name: '{{ inventory_hostname }}'
+  server.host: '{{ ip_address }}'
+  server.port: 5601
+  server.publicBaseUrl: https://{{ ip_address }}:5601
+  elasticsearch.hosts: '{{ groups["elasticsearch"] |
+    map("ansible.builtin.extract", hostvars, "elasticsearch_url") }}'
+  elasticsearch.username: kibana_system
+  elasticsearch.password: '{{ elasticsearch_kibana_password }}'
+...
