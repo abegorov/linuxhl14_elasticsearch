@@ -14,8 +14,8 @@ kibana_ca_cert_path: '{{ kibana_certs_dir }}/ca.crt'
 kibana_ca_key_path: '{{ kibana_certs_dir }}/ca.key'
 kibana_cert_path: '{{ kibana_certs_dir }}/{{ inventory_hostname }}.crt'
 kibana_key_path: '{{ kibana_certs_dir }}/{{ inventory_hostname }}.key'
-kibana_cert_not_after: '20260101000000Z'
-kibana_cert_not_before: '20250101000000Z'
+kibana_cert_not_after: '20270101000000Z'
+kibana_cert_not_before: '20260101000000Z'
 logstash_certs_dir: secrets/certs/logstash
 logstash_ca_cert_path: '{{ logstash_certs_dir }}/ca.crt'
 logstash_ca_key_path: '{{ logstash_certs_dir }}/ca.key'
@@ -56,11 +56,11 @@ web_ca_cert_path: '{{ web_certs_dir }}/ca.crt'
 web_ca_key_path: '{{ web_certs_dir }}/ca.key'
 web_cert_path: '{{ web_certs_dir }}/{{ inventory_hostname }}.crt'
 web_key_path: '{{ web_certs_dir }}/{{ inventory_hostname }}.key'
-web_cert_not_after: '20260101000000Z'
-web_cert_not_before: '20250101000000Z'
+web_cert_not_after: '20270101000000Z'
+web_cert_not_before: '20260101000000Z'
 
-tls_ca_not_after: '21250101000000Z'
-tls_ca_not_before: '20250101000000Z'
+tls_ca_not_after: '21260101000000Z'
+tls_ca_not_before: '20260101000000Z'
 tls_ca_certs:
   - common_name: LOCAL ELASTICSEARCH ROOT CA
     cert_path: '{{ elasticsearch_ca_cert_path }}'
@@ -96,8 +96,8 @@ tls_ca_certs:
     cert_path: '{{ web_ca_cert_path }}'
     key_path: '{{ web_ca_key_path }}'
 
-tls_certs_not_after: '21250101000000Z'
-tls_certs_not_before: '20250101000000Z'
+tls_certs_not_after: '21260101000000Z'
+tls_certs_not_before: '20260101000000Z'
 tls_certs_subject_alt_name:
   - 'DNS:{{ inventory_hostname_short }}'
   - 'DNS:localhost'
