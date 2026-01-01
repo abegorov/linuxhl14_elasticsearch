@@ -42,4 +42,6 @@ filebeat_config:
     - add_kubernetes_metadata: ~
     - decode_json_fields:
         fields: [message]
+        max_depth: 3
+        target: ""
 ...
