@@ -55,4 +55,11 @@
   roles:
     - role: keepalived
       when: not yandex_cloud | default(False)
+
+- name: Filebeat provision
+  hosts: all
+  become: true
+  gather_facts: false
+  roles:
+    - filebeat
 ...
