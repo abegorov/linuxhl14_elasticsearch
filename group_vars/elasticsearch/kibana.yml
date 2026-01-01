@@ -14,4 +14,15 @@ kibana_node_options: |
   --unhandled-rejections=warn
   --dns-result-order=ipv4first
   --no-experimental-require-module
+
+kibana_dataview_url: https://{{ ip_address }}:5601
+kibana_dataview_create:
+  angie: filebeat-nginx-*
+  elasticsearch: filebeat-elasticsearch-*
+  haproxy: filebeat-haproxy-*
+  kibana: filebeat-kibana-*
+  logstash: filebeat-logstash-*
+  postgresql: filebeat-postgresql-*
+  redis: filebeat-redis-*
+  system: filebeat-system-*
 ...

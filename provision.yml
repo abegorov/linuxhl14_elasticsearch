@@ -25,18 +25,12 @@
     - kibana
     - logstash
 
-- name: Web provision
-  hosts: backend
-  become: true
-  gather_facts: false
-  roles:
-    - angie
-
 - name: Backend provision
   hosts: backend
   become: true
   gather_facts: false
   roles:
+    - angie
     - etcd
     - patroni
     - haproxy
@@ -47,12 +41,6 @@
     - patroni_db
     - patroni_privs
     - netbox
-
-- name: Shared IP provision
-  hosts: backend
-  become: true
-  gather_facts: false
-  roles:
     - role: keepalived
       when: not yandex_cloud | default(False)
 
@@ -62,4 +50,11 @@
   gather_facts: false
   roles:
     - filebeat
+
+- name: Create kibana data views
+  hosts: es-es-01
+  become: false
+  gather_facts: false
+  roles:
+    - kibana_dataview
 ...
