@@ -19,6 +19,7 @@ filebeat_config:
       deprecation.enabled: true
     - module: kibana
       log.enabled: true
+      log.var.paths: [/var/log/kibana/kibana.log*]
       audit.enabled: true
     - module: logstash
       log.enabled: true
@@ -37,4 +38,8 @@ filebeat_config:
     - add_cloud_metadata: ~
     - add_docker_metadata: ~
     - add_kubernetes_metadata: ~
+    - decode_json_fields:
+        fields: [message]
+        max_depth: 3
+        target: ""
 ...
