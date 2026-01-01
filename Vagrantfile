@@ -31,12 +31,15 @@ GROUPS = {
   },
   :elasticsearch => {
     :"#{PRJ}-es-01" => {
+      :memory => 4096,
       :networks => { :private_network => { :ip => '192.168.56.31' } },
     },
     :"#{PRJ}-es-02" => {
+      :memory => 4096,
       :networks => { :private_network => { :ip => '192.168.56.32' } },
     },
     :"#{PRJ}-es-03" => {
+      :memory => 4096,
       :networks => { :private_network => { :ip => '192.168.56.33' } },
     },
   },
@@ -95,7 +98,7 @@ Vagrant.configure('2') do |config|
           ansible.limit = 'all'
           ansible.compatibility_mode = '2.0'
           ansible.raw_arguments = ['--diff']
-          #ansible.tags = 'es'
+          #ansible.tags = ['filebeat', 'kibana_dataview']
         end
       end
 
