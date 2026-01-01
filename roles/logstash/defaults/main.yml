@@ -11,6 +11,8 @@ logstash_elasticsearch_cert:
   ca_path: /etc/logstash/certs/elasticsearch_ca.crt
   ca_content: '{{ lookup("ansible.builtin.file", elasticsearch_ca_cert_path) }}'
 
+logstash_add_certs: []
+
 logstash_confd: {}
 logstash_confd_perms: {}
 logstash_confd_default_owner: root

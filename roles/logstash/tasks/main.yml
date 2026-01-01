@@ -8,9 +8,8 @@
     name: tls_copy
     public: false
   vars:
-    tls_copy_certs:
-      - '{{ logstash_cert }}'
-      - '{{ logstash_elasticsearch_cert }}'
+    tls_copy_certs: '{{ [logstash_cert] +
+      [logstash_elasticsearch_cert] + logstash_add_certs }}'
     tls_copy_dir_owner: root
     tls_copy_dir_group: logstash
     tls_copy_dir_mode: '0750'
