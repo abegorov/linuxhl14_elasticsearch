@@ -1,4 +1,6 @@
 ---
+angie_access_logs:
+  - /var/log/angie/access.log  json_extended
 angie_httpd_conf_backend:
   backend: |
     server {
