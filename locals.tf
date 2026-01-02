@@ -1,5 +1,4 @@
 locals {
-  yandex_compute_instance_iscsi_count = 2
   yandex_compute_instance_metadata = {
     install-unified-agent = 0
     serial-port-enable    = 0
