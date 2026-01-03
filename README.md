@@ -23,11 +23,17 @@
 - **apt_sources** - настраивает репозитории для пакетного менеджера **apt** (используется [mirror.yandex.ru](https://mirror.yandex.ru)).
 - **bach_completion** - устанавливает пакет **bash-completion**.
 - **chrony** - устанавливает **chrony** для синхронизации времени между узлами.
+- **elastic_repo** - настраивает репозиторий для **elasticsearch**, **kibana** и **logstash** (используется [mirror.yandex.ru/mirrors/elastic/8](https://mirror.yandex.ru/mirrors/elastic/8))/
+- **elasticsearch** - устанавливает и настраивает **elasticsearch**/
 - **etcd** - устанавливает и настраивает кластер **etcd** для его дальнейшего использования **patroni**.
+- **filebeat** - устанавливает и настраивает **filebeat**.
 - **haproxy** - устанавливает и настраивает **haproxy** для проксирования запросов к **redis** и **postgresql**.
 - **hosts** - прописывает адреса всех узлов в `/etc/hosts`.
 - **keepalived** - устанавливает и настраивает **keepalived** при разворачивании в **vagrant**.
+- **kibana** - устанавливает и настраивает **kibana**.
+- **kibana_dataview** - добавляет указанные **Data views** в индексы **kibana** в **elasticsearch**.
 - **locale_gen** - генерит локаль **ru_RU.UTF-8** для последующего использования в **postgresql**.
+- **logstash** - устанавливает и настраивает **logstash**.
 - **netbox** - устанавливает и настраивает **netbox**.
 - **patroni** - устанавливает и настраивает кластер **patroni**.
 - **patroni_db** - создаёт базу данных в кластере **patroni** (определяет лидера и создаёт её на лидере).
@@ -54,6 +60,7 @@
 - [group_vars/all/hosts.yml](group_vars/all/hosts.yml) - настройки для роли **hosts** (список узлов, которые нужно добавить в `/etc/hosts`);
 - [group_vars/backend/angie.yml](group_vars/backend/angie.yml) - настройки **angie** для узлов **backend**;
 - [group_vars/backend/certs.yml](group_vars/backend/certs.yml) - настройки генерации сертификатов для **backend**;
+- [group_vars/backend/filebeat.yml](group_vars/backend/filebeat.yml) - настройки для **filebeat** для **backend**;
 - [group_vars/backend/haproxy.yml](group_vars/backend/haproxy.yml) - настройки **haproxy**  для узлов **backend** (проксирования не лидера **patroni** и **redis**);
 - [group_vars/backend/keepalived.yml](group_vars/backend/keepalived.yml) - настройки **keepalived** для узлов **backend**;
 - [group_vars/backend/netbox.yml](group_vars/backend/netbox.yml) - настройки **netbox** для узлов **backend**;
@@ -61,10 +68,16 @@
 - [group_vars/backend/pgbouncer.yml](group_vars/backend/pgbouncer.yml) - настройки **pgbouncer** для узлов **backend**;
 - [group_vars/backend/redis.yml](group_vars/backend/redis.yml) - настройки **redis** для узлов **backend**;
 - [group_vars/backend/users.yml](group_vars/backend/users.yml) - настройки создания пользователей и групп на узлах **backend**;
+- [group_vars/elasticsearch/certs.yml](group_vars/elasticsearch/certs.yml) - настройки генерации сертификатов для **elasticsearch**;
+- [group_vars/elasticsearch/elasticsearch.yml](group_vars/elasticsearch/elasticsearch.yml) - настройки для **elasticsearch**;
+- [group_vars/elasticsearch/filebeat.yml](group_vars/elasticsearch/filebeat.yml) - настройки для **filebeat** для **elasticsearch**;
+- [group_vars/elasticsearch/kibana.yml](group_vars/elasticsearch/kibana.yml) - настройки для **kibana** для **elasticsearch**;
+- [group_vars/elasticsearch/logstash.yml](group_vars/elasticsearch/logstash.yml) - настройки для **logstash** для **elasticsearch**;
 - [host_vars/es-backend-01/redis.yml](host_vars/es-backend-01/mariadb.yml) - настройки **redis** для **es-backend-01**;
 - [host_vars/es-backend-01/keepalived.yml](host_vars/es-backend-01/keepalived.yml) - настройки **keepalived** для **es-backend-01**;
 - [host_vars/es-backend-02/keepalived.yml](host_vars/es-backend-02/keepalived.yml) - настройки **keepalived** для **es-backend-02**;
-- [host_vars/es-backend-03/keepalived.yml](host_vars/es-backend-03/keepalived.yml) - настройки **keepalived** для **es-backend-03**.
+- [host_vars/es-backend-03/keepalived.yml](host_vars/es-backend-03/keepalived.yml) - настройки **keepalived** для **es-backend-03**;
+- [host_vars/es-es-01/elasticsearch.yml](host_vars/es-es-01/elasticsearch.yml) - настройки **elasticsearch** для **es-backend-01** (позволяет установить пароль кластера только на этом узле).
 
 ## Запуск
 
@@ -96,11 +109,33 @@ rm vagrant.box
 - **Ansible 2.20.1**
 - **Python 3.13.9**
 - **Jinja2 3.1.6**
+- **Terraform 1.14.3**
 
-После запуска **NetBox** должен открываться по **IP** балансировщика. Для **Yandex Cloud** адрес можно узнать в выводе **terraform** в поле **load_balancer** (смотри [outputs.tf](outputs.tf)). Для **vagrant** это (можно использовать любой адрес):
+После запуска **NetBox** должен открываться по **IP** балансировщика. Для **Yandex Cloud** адрес можно узнать в выводе **terraform output** в поле **load_balancer** (смотри [outputs.tf](outputs.tf)). Для **vagrant** это (можно использовать любой адрес):
 
 - [https://192.168.56.51](https://192.168.56.51) - узел **es-backend-01**.
 - [https://192.168.56.52](https://192.168.56.52) - узел **es-backend-02**.
 - [https://192.168.56.53](https://192.168.56.53) - узел **es-backend-03**.
 
 Однако **keepalived** настроен таким образом, что при недоступности одного из узлов, его адрес переезжает на один из доступных.
+
+Для начала проверим, что **kibana** и **backend** поднялись для этого перейдём на порты **443**, **5601** и **9443** балансировщика.
+
+![netbox](images/netbox.png)
+![kibana](images/kibana.png)
+![vts](images/vts.png)
+
+Конвейер сбора логов представляет из себя **Filebeat** -> **Logstash** -> **ElasticSearch**. Каждое приложение пришет в свой индекс, поэтому если индексы были созданы, то настройка прошла успешно. Зайдём в **Kibana** -> **Stack Management** -> **Data** -> **index Management** (пароль пользователя **elastic** генерится автоматически и доступен в файл [secrets/elasticsearch_elastic_password.txt](secrets/elasticsearch_elastic_password.txt)) и проверим, что все индексы были созданы. Видно, что создалось 8 индексов, все в статусе **green** и у каждого есть одна реплика:
+
+![vts](images/indexes.png)
+
+Посмотрим содержимое этих индексов через **Kibana** -> **Analytics** -> **Discover**:
+
+![angie](images/angie.png)
+![elasticsearch](images/elasticsearch.png)
+![haproxy](images/haproxy.png)
+![kibana](images/kibana_log.png)
+![logstash](images/logstash.png)
+![postgresql](images/postgresql.png)
+![redis](images/redis.png)
+![system](images/system.png)
