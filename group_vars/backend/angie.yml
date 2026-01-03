@@ -47,9 +47,8 @@ angie_httpd_conf_backend:
 
       location / {
         proxy_pass https://kibana;
-        proxy_set_header X-Forwarded-Host $http_host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_connect_timeout 5000ms;
+        proxy_next_upstream error timeout http_502 http_503 http_504;
       }
     }
 angie_httpd_conf: '{{ angie_httpd_conf_default |
