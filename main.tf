@@ -72,7 +72,7 @@ resource "yandex_compute_instance" "elasticsearch" {
     ip_address = cidrhost(
       one(yandex_vpc_subnet.default.v4_cidr_blocks), 31 + count.index
     )
-    nat       = count.index == 0
+    nat       = false
   }
   metadata = local.yandex_compute_instance_metadata
 }
