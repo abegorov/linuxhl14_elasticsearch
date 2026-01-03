@@ -28,4 +28,8 @@
     owner: root
     group: root
     mode: '0644'
+  notify: Update elasticsearch apt packages cache
+
+- name: Force all notified handlers to run at this point
+  ansible.builtin.meta: flush_handlers
 ...
